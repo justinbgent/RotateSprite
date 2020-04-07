@@ -9,6 +9,9 @@ namespace RotateSprite
     /// </summary>
     public class Game1 : Game
     {
+        Texture2D sprite;
+        Vector2 spritePosition;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
@@ -27,6 +30,8 @@ namespace RotateSprite
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            sprite = Content.Load<Texture2D>("circle");
+            spritePosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
 
             base.Initialize();
         }
@@ -73,9 +78,13 @@ namespace RotateSprite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(sprite, spritePosition, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
