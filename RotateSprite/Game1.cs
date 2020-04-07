@@ -76,11 +76,11 @@ namespace RotateSprite
 
             if (keyState.IsKeyDown(Keys.Up) && !oldKeyState.IsKeyDown(Keys.Up))
             {
-                rotation += 1f;
+                rotation += MathHelper.Pi/2f;
             }
             if (keyState.IsKeyDown(Keys.Down) && !oldKeyState.IsKeyDown(Keys.Down))
             {
-                rotation -= 1f;
+                rotation -= MathHelper.Pi/2f;
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyState.IsKeyDown(Keys.Escape))
