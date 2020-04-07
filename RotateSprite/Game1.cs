@@ -12,6 +12,10 @@ namespace RotateSprite
         Texture2D sprite;
         Vector2 spritePosition;
 
+        float rotation = 0f;
+        KeyboardState oldKeyState;
+        KeyboardState keyState;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
@@ -19,6 +23,7 @@ namespace RotateSprite
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -30,9 +35,10 @@ namespace RotateSprite
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            sprite = Content.Load<Texture2D>("circle");
             spritePosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
 
+            keyState = Keyboard.GetState();
+            oldKeyState = Keyboard.GetState();
             base.Initialize();
         }
 
@@ -46,6 +52,7 @@ namespace RotateSprite
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            sprite = Content.Load<Texture2D>("circle");
         }
 
         /// <summary>
@@ -64,7 +71,19 @@ namespace RotateSprite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            oldKeyState = keyState;
+            keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Up) && !oldKeyState.IsKeyDown(Keys.Up))
+            {
+                rotation += 1f;
+            }
+            if (keyState.IsKeyDown(Keys.Down) && !oldKeyState.IsKeyDown(Keys.Down))
+            {
+                rotation -= 1f;
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
@@ -83,7 +102,7 @@ namespace RotateSprite
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            spriteBatch.Draw(sprite, spritePosition, Color.White);
+            spriteBatch.Draw(sprite, spritePosition, null, Color.White, rotation, new Vector2(sprite.Width/2, sprite.Height/2), 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
